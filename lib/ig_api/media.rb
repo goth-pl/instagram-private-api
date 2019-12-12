@@ -47,6 +47,20 @@ module IgApi
 
       JSON.parse response.body, object_class: OpenStruct
     end
+
+    def create_comment(media_id, text)
+
+      body = {
+        comment_text: text,
+        client_context:IgApi::Http.generate_uuid
+      }
+
+      response = @api.multipart(Constants::URL + "media/#{media_id}/comment/", body)
+                     .with(ua: @user.useragent, session: @user.session)
+                     .exec
+
+      JSON.parse response.body, object_class: OpenStruct
+    end
   end
 end
 
